@@ -3,15 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Gladiator.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ServiceController : ControllerBase
+public class ServicesController : ControllerBase
 {
-    private readonly GDbContext _context;
+    private readonly RiteshDbContext _context;
 
-    public ServiceController(GDbContext context)
+    public ServicesController(RiteshDbContext context)
     {
         _context = context;
     }
@@ -31,7 +30,7 @@ public class ServiceController : ControllerBase
         _context.Services.Add(service);
         _context.SaveChanges();
 
-        return CreatedAtAction("GetService", new { id = service.ServiceID }, service);
+        return CreatedAtAction(nameof(GetServices), new { id = service.ServiceID }, service);
     }
 
     // GET: api/Services/ServiceTypes

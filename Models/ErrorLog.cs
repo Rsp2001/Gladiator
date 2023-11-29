@@ -1,23 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
-namespace Gladiator.Models
+
+public class ErrorLog
 {
-   public class ErrorLog
-{
-    [Key]
-    public int Sno { get; set; }
- 
+[Key]    
+public int Sno { get; set; }
+
+    [Required(ErrorMessage = "Description is required.")]
     public string Description { get; set; }
- 
+
     public DateTime Time { get; set; }
- 
+
+    [Required(ErrorMessage = "Status is required.")]
     public string Status { get; set; }
-}
 }

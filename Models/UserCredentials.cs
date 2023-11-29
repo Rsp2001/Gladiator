@@ -1,43 +1,40 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 
-
-namespace Gladiator.Models
-{
-    public class UserCredentials
+public class User
 {
     [Key]
     public int UserID { get; set; }
- 
-    [Required]
+
+    [Required(ErrorMessage = "UserName is required.")]
     public string UserName { get; set; }
- 
-    [Required]
-    [EmailAddress]
+
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Invalid Email Address.")]
     public string Email { get; set; }
- 
-    [Required]
-    [DataType(DataType.Password)]
+
+    [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; }
- 
-    [Required]
+
+    [Required(ErrorMessage = "Role is required.")]
     public string Role { get; set; }
- 
+
     public DateTime CreatedTime { get; set; }
- 
+
     public DateTime ModifiedTime { get; set; }
-    public ICollection<Booking> Bookings { get; set; }
+
+    // Navigation Property for Bookings
+
+
+  
+
+    // Navigation Property for Payments
     public ICollection<Payment> Payments { get; set; }
-}
+    public ICollection<Booking> Bookings { get; set; }
 }

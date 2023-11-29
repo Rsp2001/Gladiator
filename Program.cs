@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("mycon");
-builder.Services.AddDbContext<GDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<RiteshDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddCors(option =>
 {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gladiator.Migrations
 {
-    public partial class InitialSetup : Migration
+    public partial class Initi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,7 @@ namespace Gladiator.Migrations
                 {
                     ServiceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceType = table.Column<int>(type: "int", nullable: false),
+                    ServiceType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Requirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Charges = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -46,7 +46,7 @@ namespace Gladiator.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserCredentials",
+                name: "Users",
                 columns: table => new
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
@@ -60,7 +60,7 @@ namespace Gladiator.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserCredentials", x => x.UserID);
+                    table.PrimaryKey("PK_Users", x => x.UserID);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,9 +89,9 @@ namespace Gladiator.Migrations
                         principalColumn: "ServiceID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookings_UserCredentials_UserID",
+                        name: "FK_Bookings_Users_UserID",
                         column: x => x.UserID,
-                        principalTable: "UserCredentials",
+                        principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -120,11 +120,10 @@ namespace Gladiator.Migrations
                         principalColumn: "BookingID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Payments_UserCredentials_UserID",
+                        name: "FK_Payments_Users_UserID",
                         column: x => x.UserID,
-                        principalTable: "UserCredentials",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Users",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -163,7 +162,7 @@ namespace Gladiator.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "UserCredentials");
+                name: "Users");
         }
     }
 }

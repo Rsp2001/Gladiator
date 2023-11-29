@@ -4,16 +4,18 @@ using Gladiator.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Gladiator.Migrations
 {
-    [DbContext(typeof(GDbContext))]
-    partial class GDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RiteshDbContext))]
+    [Migration("20231129113702_Initi")]
+    partial class Initi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace Gladiator.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Gladiator.Models.Booking", b =>
+            modelBuilder.Entity("Booking", b =>
                 {
                     b.Property<int>("BookingID")
                         .ValueGeneratedOnAdd()
@@ -69,7 +71,7 @@ namespace Gladiator.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.ErrorLog", b =>
+            modelBuilder.Entity("ErrorLog", b =>
                 {
                     b.Property<int>("Sno")
                         .ValueGeneratedOnAdd()
@@ -93,7 +95,7 @@ namespace Gladiator.Migrations
                     b.ToTable("ErrorLogs");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Payment", b =>
+            modelBuilder.Entity("Payment", b =>
                 {
                     b.Property<int>("Sno")
                         .ValueGeneratedOnAdd()
@@ -132,7 +134,7 @@ namespace Gladiator.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Service", b =>
+            modelBuilder.Entity("Service", b =>
                 {
                     b.Property<int>("ServiceID")
                         .ValueGeneratedOnAdd()
@@ -163,8 +165,9 @@ namespace Gladiator.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ServiceType")
-                        .HasColumnType("int");
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timing")
                         .HasColumnType("datetime2");
@@ -174,7 +177,7 @@ namespace Gladiator.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.UserCredentials", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
@@ -206,18 +209,18 @@ namespace Gladiator.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("UserCredentials");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Booking", b =>
+            modelBuilder.Entity("Booking", b =>
                 {
-                    b.HasOne("Gladiator.Models.Service", "Service")
+                    b.HasOne("Service", "Service")
                         .WithMany("Bookings")
                         .HasForeignKey("ServiceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Gladiator.Models.UserCredentials", "UserCredentials")
+                    b.HasOne("User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -225,39 +228,39 @@ namespace Gladiator.Migrations
 
                     b.Navigation("Service");
 
-                    b.Navigation("UserCredentials");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Payment", b =>
+            modelBuilder.Entity("Payment", b =>
                 {
-                    b.HasOne("Gladiator.Models.Booking", "Booking")
+                    b.HasOne("Booking", "Booking")
                         .WithMany("Payments")
                         .HasForeignKey("BookingID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Gladiator.Models.UserCredentials", "UserCredentials")
+                    b.HasOne("User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Booking");
 
-                    b.Navigation("UserCredentials");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Booking", b =>
+            modelBuilder.Entity("Booking", b =>
                 {
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.Service", b =>
+            modelBuilder.Entity("Service", b =>
                 {
                     b.Navigation("Bookings");
                 });
 
-            modelBuilder.Entity("Gladiator.Models.UserCredentials", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Navigation("Bookings");
 

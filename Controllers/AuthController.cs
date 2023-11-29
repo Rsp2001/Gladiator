@@ -1,41 +1,40 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gladiator.Models;
-using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly GDbContext _context;
+    private readonly RiteshDbContext _context;
 
-    public AuthController(GDbContext context)
+    public AuthController(RiteshDbContext context)
     {
         _context = context;
     }
 
     // POST: api/Auth/register
     [HttpPost("register")]
-    public IActionResult Register(UserCredentials user)
+    public IActionResult Register(User user)
     {
-        _context.UserCredentials.Add(user);
+        _context.Users.Add(user);
         _context.SaveChanges();
 
-        return Ok(new { Message = "Registration successful" });
+        return CreatedAtAction(nameof(Login), new { id = user.UserID }, user);
     }
 
     // POST: api/Auth/login
     [HttpPost("login")]
-    public IActionResult Login(UserCredentials user)
+    public IActionResult Login(User user)
     {
-        var existingUser = _context.UserCredentials.FirstOrDefault(u => u.UserName == user.UserName && u.Password == user.Password);
+        var existingUser = _context.Users
+            .FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+
         if (existingUser == null)
         {
-            return Unauthorized(new { Message = "Invalid username or password" });
+            return NotFound("Invalid email or password");
         }
 
-        // You can generate a token here and return it if needed
-
-        return Ok(new { Message = "Login successful" });
+        return Ok(existingUser);
     }
 }
